@@ -2,8 +2,7 @@ package retina
 
 import (
 	"encoding/csv"
-	"fmt"
-	//"log"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -105,17 +104,16 @@ func SlicePosition(slice []string, value string) int {
 }
 
 func LoadJobMetrices(filename string) ([][]string, *RetinaJobMetricsHeadings) {
-	//fmt.Println("Loading CSV File:", filename)
 	tmpcsvfile, err := os.Open(filename)
 	if err != nil {
-		fmt.Println("tmpcsvfile Error:", err)
+		log.Fatal("Error loading Retina Job Metrics: ", err)
 	}
 	defer tmpcsvfile.Close()
 
 	csvreader := csv.NewReader(tmpcsvfile)
 	csvrecords, err := csvreader.ReadAll()
 	if err != nil {
-		fmt.Println("Error reading CSV:", err)
+		log.Fatal("Error reading Retina Job Metrics: ", err)
 	}
 	csvheadings := new(RetinaJobMetricsHeadings)
 	csvheadings.GetRetinaJobMetricsHeadings(csvrecords[0])
@@ -123,17 +121,16 @@ func LoadJobMetrices(filename string) ([][]string, *RetinaJobMetricsHeadings) {
 }
 
 func LoadCsv(filename string) ([][]string, *RetinaCsvHeadings) {
-	//fmt.Println("Loading CSV File:", filename)
 	tmpcsvfile, err := os.Open(filename)
 	if err != nil {
-		fmt.Println("tmpcsvfile Error:", err)
+		log.Fatal("Error loading Retina CSV: ", err)
 	}
 	defer tmpcsvfile.Close()
 
 	csvreader := csv.NewReader(tmpcsvfile)
 	csvrecords, err := csvreader.ReadAll()
 	if err != nil {
-		fmt.Println("Error reading CSV:", err)
+		log.Fatal("Error reading Retina CSV: ", err)
 	}
 	csvheadings := new(RetinaCsvHeadings)
 	csvheadings.GetRetinaCsvHeadings(csvrecords[0])
@@ -229,9 +226,12 @@ func PercentSummary(iavcounts [][]string, jobmetricsfile [][]string, jobmetricsh
 func WriteSummary(fileoutname string, csvfile [][]string) {
 	summaryfile, err := os.OpenFile(fileoutname, os.O_RDWR|os.O_CREATE, 0660)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Fatal("Error creating summary: ", err)
 	}
 	defer summaryfile.Close()
 	summarywriter := csv.NewWriter(summaryfile)
-	summarywriter.WriteAll(csvfile)
+	err = summarywriter.WriteAll(csvfile)
+	if err != nil {
+		log.Fatal("Error writing to summary CSV: ", err)
+	}
 }
