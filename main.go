@@ -3,25 +3,27 @@ package main
 import (
 	"flag"
 	"github.com/chetbishop/retinacsv/retina"
+	"log"
 )
 
-var retinacsv string
-var retinajob string
+var scanname string
 var outfile string
+var iavref string
 
 func init() {
-	flag.StringVar(&retinacsv, "csv", "", "Filename of Retina CSV output")
-	flag.StringVar(&retinajob, "job", "", "Filename of Retina CSV Job Metrics")
+	flag.StringVar(&scanname, "scanname", "servers", "Filename of Retina CSV output")
 	flag.StringVar(&outfile, "summary", "summary.csv", "Filename for summary CSV")
+	flag.StringVar(&iavref, "iavref", "iavdetails.csv", "File containing information related it IAVs")
 }
 
 func main() {
 	flag.Parse()
-	csv, head := retina.LoadCsv(retinacsv)
-	metrics, methead := retina.LoadJobMetrices(retinajob)
-	retina.RemoveDuplicatesCsv(&csv)
-	iavdetected := retina.FindIAVDetected(csv, head)
-	iavcounts := retina.CountIAV(csv, head, iavdetected)
-	summary := retina.PercentSummary(iavcounts, metrics, methead)
-	retina.WriteSummary(outfile, summary)
+	ScanCsv := retina.LoadScan(scanname, iavref)
+	retina.RemoveDuplicatesCsv(&ScanCsv.ScanData)
+	anaysisStruct := new(retina.CsvAnalysis)
+	anaysisStruct.FindIAVDetected(ScanCsv)
+	//iavcounts := ScanCsv.CountIAV(iavdetected)
+	log.Println(anaysisStruct.IavDetected)
+	//summary := retina.PercentSummary(iavcounts, metrics, methead)
+	//retina.WriteSummary(outfile, summary)
 }
