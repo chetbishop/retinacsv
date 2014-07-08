@@ -39,22 +39,25 @@ func (analysis *CsvAnalysis) FindIAVDetected(scanStruct *ScanCsv) {
 	}
 	analysis.IavDetected = iavdetected
 	analysis.RemoveDuplicates()
-
 }
 
-func (scanStruct *ScanCsv) CountIAV(iavdetected []string) [][]string {
-	var iavcounts [][]string
-	for iav := range iavdetected {
+func (analysis *CsvAnalysis) CountIAV(scanStruct *ScanCsv) {
+	var iavcountsout []IavCounts
+	iavdetected := analysis.IavDetected
+	for _, iavfound := range iavdetected {
 		var iavcount int
 		for entry := range scanStruct.ScanData {
 			iaventry := scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IAV]
-			if strings.Contains(iaventry, iavdetected[iav]) == true {
+			if strings.Contains(iaventry, iavfound.Iav) == true {
 				iavcount++
 			}
 		}
-		iavcounts = append(iavcounts, []string{iavdetected[iav], strconv.Itoa(iavcount)})
+		var count IavCounts
+		count.Iav = iavfound.Iav
+		count.Count = iavcount
+		iavcountsout = append(iavcountsout, count)
 	}
-	return iavcounts
+	analysis.IavCounts = iavcountsout
 }
 func PercentSummary(iavcounts [][]string, jobmetricsfile [][]string, jobmetricshead *RetinaJobMetricsHeadings) [][]string {
 	var summary [][]string
