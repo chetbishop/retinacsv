@@ -59,7 +59,7 @@ func (analysis *CsvAnalysis) CountIAV(scanStruct *ScanCsv) {
 	}
 	analysis.IavCounts = iavcountsout
 }
-func PercentSummary(iavcounts [][]string, jobmetricsfile [][]string, jobmetricshead *RetinaJobMetricsHeadings) [][]string {
+func (analysis *CsvAnalysis) PercentSummary(scanStruct *ScanCsv) {
 	var summary [][]string
 	summary = append(summary, []string{"IAV", "Number of Hosts Found Vulnerable", "Number of Hosts Found", "Number of Hosts Compliant", "Percentage Compliant"})
 	for x := range iavcounts {
