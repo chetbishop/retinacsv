@@ -22,8 +22,9 @@ func main() {
 	retina.RemoveDuplicatesCsv(&ScanCsv.ScanData)
 	anaysisStruct := new(retina.CsvAnalysis)
 	anaysisStruct.FindIAVDetected(ScanCsv)
-	anaysisStruct.CountIAV(ScanCsv)
-	log.Println(anaysisStruct)
+	anaysisStruct.GetIavDetails(ScanCsv)
+	anaysisStruct.GetDeviceList(ScanCsv)
+	log.Println(len(anaysisStruct.DevicesDetected))
 	//summary := retina.PercentSummary(iavcounts, metrics, methead)
 	//retina.WriteSummary(outfile, summary)
 }

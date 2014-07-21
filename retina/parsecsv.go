@@ -16,8 +16,9 @@ func UniqueColumnCount(csvfile [][]string, column int) int {
 	return len(columndata)
 
 }
+
 func (a *CsvAnalysis) RemoveDuplicates() {
-	found := make(map[IavDetect]bool)
+	found := make(map[string]bool)
 	xs := a.IavDetected
 	j := 0
 	for i, x := range xs {
