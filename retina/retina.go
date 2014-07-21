@@ -79,21 +79,23 @@ func (analysis *CsvAnalysis) GetDeviceDetails(scanStruct *ScanCsv) {
 	var devicedetails []Device
 	devicelist := analysis.DevicesDetected
 	for _, device := range devicelist {
-		var iavcount int
+		var devicecount int
 		var devicestruct Device
 		for entry := range scanStruct.ScanData {
 			deviceentry := scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IP]
 			if strings.Contains(deviceentry, device) == true {
-				count.DeviceIP = append(count.DeviceIP, scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IP])
-				iavcount++
+				if scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IAV] != "N/A" {
+					devicestruct.Iav = append(devicestruct.Iav, scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IAV])
+					devicecount++
+				}
 			}
 		}
 
-		count.Iav = iavfound
-		count.Count = iavcount
-		iavcountsout = append(iavcountsout, count)
+		devicestruct.DeviceIP = device
+		devicestruct.IavCount = devicecount
+		devicedetails = append(devicedetails, devicestruct)
 	}
-	analysis.IavDetails = iavcountsout
+	analysis.DeviceDetails = devicedetails
 }
 
 //func (analysis *CsvAnalysis) PercentSummary(scanStruct *ScanCsv) {
