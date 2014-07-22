@@ -4,19 +4,19 @@ import (
 	"strings"
 )
 
-func UniqueColumnCount(csvfile [][]string, column int) int {
-	var columndata []string
-	header := csvfile[0][column]
-	for entry := range csvfile {
-		if csvfile[entry][column] != header {
-			columndata = append(columndata, csvfile[entry][column])
-		}
-	}
-	RemoveDuplicates(&columndata)
-	return len(columndata)
-
-}
-
+//UniqueColumnCount is not currently in use
+//func UniqueColumnCount(csvfile [][]string, column int) int {
+//	var columndata []string
+//	header := csvfile[0][column]
+//	for entry := range csvfile {
+//		if csvfile[entry][column] != header {
+//			columndata = append(columndata, csvfile[entry][column])
+//		}
+//	}
+//	RemoveDuplicates(&columndata)
+//	return len(columndata)
+//}
+//RemoveDuplicates will remove the duplicates in a CsvAnalysis struct that has a type of []string.
 func (a *CsvAnalysis) RemoveDuplicates() {
 	found := make(map[string]bool)
 	xs := a.IavDetected
@@ -32,6 +32,8 @@ func (a *CsvAnalysis) RemoveDuplicates() {
 	xs = (xs)[:j]
 	a.IavDetected = xs
 }
+
+//RemoveDuplicates removes the duplicate entries in a []string.
 func RemoveDuplicates(xs *[]string) {
 	found := make(map[string]bool)
 	j := 0
@@ -45,6 +47,8 @@ func RemoveDuplicates(xs *[]string) {
 	}
 	*xs = (*xs)[:j]
 }
+
+//RemoveDuplicatesCsv removes duplicate lines from a CSV file.
 func RemoveDuplicatesCsv(xs *[][]string) {
 	found := make(map[string]bool)
 	j := 0
@@ -55,7 +59,6 @@ func RemoveDuplicatesCsv(xs *[][]string) {
 			(*xs)[j] = (*xs)[i]
 			j++
 		}
-
 	}
 	*xs = (*xs)[:j]
 }

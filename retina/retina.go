@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
-	//	"strconv"
+	"strconv"
 	"strings"
 )
 
@@ -86,6 +86,7 @@ func (analysis *CsvAnalysis) GetDeviceDetails(scanStruct *ScanCsv) {
 			if strings.Contains(deviceentry, device) == true {
 				if scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IAV] != "N/A" {
 					devicestruct.Iav = append(devicestruct.Iav, scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.IAV])
+					devicestruct.DeviceName = scanStruct.ScanData[entry][scanStruct.ScanDataHeadings.NetBIOSName]
 					devicecount++
 				}
 			}
@@ -98,29 +99,29 @@ func (analysis *CsvAnalysis) GetDeviceDetails(scanStruct *ScanCsv) {
 	analysis.DeviceDetails = devicedetails
 }
 
-//func (analysis *CsvAnalysis) PercentSummary(scanStruct *ScanCsv) {
-//	var summary [][]string
-//	summary = append(summary, []string{"IAV", "Number of Hosts Found Vulnerable", "Number of Hosts Found", "Number of Hosts Compliant", "Percentage Compliant"})
-//	for x := range iavcounts {
-//		var writestring []string
-//		numiavfound, _ := strconv.Atoi(iavcounts[x][1])
-//		numhosttotal, _ := strconv.Atoi(jobmetricsfile[1][jobmetricshead.HostsScanned])
-//		numhostscompliant := numhosttotal - numiavfound
-//		percent := strconv.FormatFloat(float64(numhostscompliant)/float64(numhosttotal), 'f', 2, 32)
-//		writestring = []string{iavcounts[x][0], iavcounts[x][1], jobmetricsfile[1][jobmetricshead.HostsScanned], strconv.Itoa(numhostscompliant), percent}
-//		summary = append(summary, writestring)
-//	}
-//	return summary
-//}
+func (analysis *CsvAnalysis) PercentSummary(scanStruct *ScanCsv) {
+	var summary [][]string
+	summary = append(summary, []string{"IAV", "Number of Hosts Found Vulnerable", "Number of Hosts Found", "Number of Hosts Compliant", "Percentage Compliant"})
+	for _, iav := range analysis.IavDetails {
+		var writestring []string
+		numiavfound := iav.Count
+		numhosttotal, _ := strconv.Atoi(scanStruct.JobMetrics[1][scanStruct.JobMetricsHeadings.HostsScanned])
+		numhostscompliant := numhosttotal - numiavfound
+		percent := strconv.FormatFloat(float64(numhostscompliant)/float64(numhosttotal), 'f', 5, 32)
+		writestring = []string{iav.Iav, strconv.Itoa(numiavfound), strconv.Itoa(numhosttotal), strconv.Itoa(numhostscompliant), percent}
+		summary = append(summary, writestring)
+	}
+	analysis.Summary = summary
+}
 
-func WriteSummary(fileoutname string, csvfile [][]string) {
+func (analysis *CsvAnalysis) WriteSummary(fileoutname string) {
 	summaryfile, err := os.OpenFile(fileoutname, os.O_RDWR|os.O_CREATE, 0660)
 	if err != nil {
 		log.Fatal("Error creating summary: ", err)
 	}
 	defer summaryfile.Close()
 	summarywriter := csv.NewWriter(summaryfile)
-	err = summarywriter.WriteAll(csvfile)
+	err = summarywriter.WriteAll(analysis.Summary)
 	if err != nil {
 		log.Fatal("Error writing to summary CSV: ", err)
 	}

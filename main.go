@@ -25,7 +25,6 @@ func main() {
 	anaysisStruct.GetIavDetails(ScanCsv)
 	anaysisStruct.GetDeviceList(ScanCsv)
 	anaysisStruct.GetDeviceDetails(ScanCsv)
-	log.Println(anaysisStruct.DeviceDetails[0])
-	//summary := retina.PercentSummary(iavcounts, metrics, methead)
-	//retina.WriteSummary(outfile, summary)
+	anaysisStruct.PercentSummary(ScanCsv)
+	anaysisStruct.WriteSummary(summary)
 }

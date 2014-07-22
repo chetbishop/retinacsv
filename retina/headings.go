@@ -1,5 +1,6 @@
 package retina
 
+//GetIavRefHeadings will populate an IavRefHeadings struct with the column number of the titled heading.
 func (h *IavRefHeadings) GetIavRefHeadings(slice []string) *IavRefHeadings {
 	h.IAV = SlicePosition(slice, "IAV")
 	h.Name = SlicePosition(slice, "Name")
@@ -7,6 +8,7 @@ func (h *IavRefHeadings) GetIavRefHeadings(slice []string) *IavRefHeadings {
 	return h
 }
 
+//GetRetinaJobMetricsHeadings will populate a RetinaJobMetricsHeadings struct with the column number of the titled heading.
 func (h *RetinaJobMetricsHeadings) GetRetinaJobMetricsHeadings(slice []string) *RetinaJobMetricsHeadings {
 	h.JobName = SlicePosition(slice, "JobName")
 	h.JobFileName = SlicePosition(slice, "JobFileName")
@@ -24,6 +26,7 @@ func (h *RetinaJobMetricsHeadings) GetRetinaJobMetricsHeadings(slice []string) *
 	return h
 }
 
+//GetRetinaCsvHeadings will populate a RetinaCsvHeadings struct with the column number of the titled heading.
 func (h *RetinaCsvHeadings) GetRetinaCsvHeadings(slice []string) *RetinaCsvHeadings {
 	h.NetBIOSName = SlicePosition(slice, "NetBIOSName")
 	h.DNSName = SlicePosition(slice, "DNSName")
@@ -51,6 +54,7 @@ func (h *RetinaCsvHeadings) GetRetinaCsvHeadings(slice []string) *RetinaCsvHeadi
 	return h
 }
 
+//
 func SlicePosition(slice []string, value string) int {
 	for p, v := range slice {
 		if v == value {
