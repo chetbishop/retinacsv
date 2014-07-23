@@ -20,6 +20,7 @@ func LoadScan(filename string, iavRefFile string) *ScanCsv {
 	return scanStruct
 }
 
+//FindIAVDetected creates a []string of the IAVs found during a Retina scan.
 func (analysis *CsvAnalysis) FindIAVDetected(scanStruct *ScanCsv) {
 	var iavdetected []string
 	header := scanStruct.ScanData[0][scanStruct.ScanDataHeadings.IAV]
@@ -42,6 +43,7 @@ func (analysis *CsvAnalysis) FindIAVDetected(scanStruct *ScanCsv) {
 	RemoveDuplicates(&analysis.IavDetected)
 }
 
+//GetIavDetails fills in the []IavDetails struct of a CsvAnalysis struct.
 func (analysis *CsvAnalysis) GetIavDetails(scanStruct *ScanCsv) {
 	var iavcountsout []IavDetails
 	iavdetected := analysis.IavDetected
@@ -62,6 +64,8 @@ func (analysis *CsvAnalysis) GetIavDetails(scanStruct *ScanCsv) {
 	}
 	analysis.IavDetails = iavcountsout
 }
+
+//GetDeviceList creates a []string of the IP addresses found during a Retina scan.
 func (analysis *CsvAnalysis) GetDeviceList(scanStruct *ScanCsv) {
 	var devicelist []string
 	header := scanStruct.ScanData[0][scanStruct.ScanDataHeadings.IP]
@@ -75,6 +79,7 @@ func (analysis *CsvAnalysis) GetDeviceList(scanStruct *ScanCsv) {
 	RemoveDuplicates(&analysis.DevicesDetected)
 }
 
+//GetDeviceDetails fills in the []Device struct of a CsvAnalysis struct.
 func (analysis *CsvAnalysis) GetDeviceDetails(scanStruct *ScanCsv) {
 	var devicedetails []Device
 	devicelist := analysis.DevicesDetected
@@ -99,6 +104,7 @@ func (analysis *CsvAnalysis) GetDeviceDetails(scanStruct *ScanCsv) {
 	analysis.DeviceDetails = devicedetails
 }
 
+//PercentSummary fills in the [][]summary string of a CsvAnalysis struct.
 func (analysis *CsvAnalysis) PercentSummary(scanStruct *ScanCsv) {
 	var summary [][]string
 	summary = append(summary, []string{"IAV", "Number of Hosts Found Vulnerable", "Number of Hosts Found", "Number of Hosts Compliant", "Percentage Compliant"})
@@ -114,6 +120,7 @@ func (analysis *CsvAnalysis) PercentSummary(scanStruct *ScanCsv) {
 	analysis.Summary = summary
 }
 
+//WriteSummary writes a [][]string from a CsvAnalysis struct to a CSV file.
 func (analysis *CsvAnalysis) WriteSummary(fileoutname string) {
 	summaryfile, err := os.OpenFile(fileoutname, os.O_RDWR|os.O_CREATE, 0660)
 	if err != nil {

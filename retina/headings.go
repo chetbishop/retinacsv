@@ -54,7 +54,7 @@ func (h *RetinaCsvHeadings) GetRetinaCsvHeadings(slice []string) *RetinaCsvHeadi
 	return h
 }
 
-//
+//SlicePosition returns the position of a sting in a []string.  If not found, SlicePosition retuns -1.
 func SlicePosition(slice []string, value string) int {
 	for p, v := range slice {
 		if v == value {

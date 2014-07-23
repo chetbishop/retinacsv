@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/chetbishop/retinacsv/retina"
-	"log"
+	//"log"
 )
 
 var scanname string
@@ -26,5 +26,7 @@ func main() {
 	anaysisStruct.GetDeviceList(ScanCsv)
 	anaysisStruct.GetDeviceDetails(ScanCsv)
 	anaysisStruct.PercentSummary(ScanCsv)
-	anaysisStruct.WriteSummary(summary)
+	//anaysisStruct.WriteSummary(outfile)
+	anaysisStruct.IavDetailsOut()
+	anaysisStruct.DeviceDetailsOut()
 }

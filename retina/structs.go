@@ -12,11 +12,12 @@ type ScanCsv struct {
 
 //CsvAnalysis is a struct to hold analysis information about a Retina scan.
 type CsvAnalysis struct {
-	IavDetected     []string
-	IavDetails      []IavDetails
-	DevicesDetected []string
-	DeviceDetails   []Device
-	Summary         [][]string
+	IavDetected       []string
+	IavDetails        []IavDetails
+	IavDetailsSummary [][]string
+	DevicesDetected   []string
+	DeviceDetails     []Device
+	Summary           [][]string
 }
 
 //Device is a struct that holds information about a device found by a Retina scan.
